@@ -387,6 +387,8 @@ fi
 _info "Caddy installation completed"
 
 _error_detect "mkdir -p /data/www/default"
+_error_detect "mkdir -p /data/ssl"
+_error_detect "mkdir -p /data/www_backup"
 _error_detect "mkdir -p /var/log/caddy/"
 _error_detect "mkdir -p /etc/caddy/conf.d/"
 _error_detect "chown -R caddy:caddy /var/log/caddy/"
