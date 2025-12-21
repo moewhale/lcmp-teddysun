@@ -393,10 +393,11 @@ _info "---------------------------"
 
 # Set MariaDB root password
 _info "Please input the root password of MariaDB:"
-read -r -p "[$(date)] (Default password: Teddysun.com):" db_pass
+read -s -r -p "[$(date)] (Default password: Teddysun.com) (password will not shown):" db_pass
 if [ -z "${db_pass}" ]; then
     db_pass="Teddysun.com"
 fi
+echo
 _info "---------------------------"
 _info "Password = $(_red "${db_pass}")"
 _info "---------------------------"
@@ -410,8 +411,8 @@ while true; do
     _info "$(_green 4). PHP 8.2"
     _info "$(_green 5). PHP 8.3"
     _info "$(_green 6). PHP 8.4"
-    read -r -p "[$(date)] Please input a number: (Default 5) " php_version
-    [ -z "${php_version}" ] && php_version=5
+    read -r -p "[$(date)] Please input a number: (Default 6) " php_version
+    [ -z "${php_version}" ] && php_version=6
     case "${php_version}" in
     1)
         php_ver="7.4"
