@@ -14,7 +14,7 @@
 # Ubuntu 22.04
 # Ubuntu 24.04
 #
-# Copyright (C) 2023 - 2025 Teddysun <i@teddysun.com>
+# Copyright (C) 2023 - 2026 Teddysun <i@teddysun.com>
 #
 trap _exit INT QUIT TERM
 
@@ -212,14 +212,14 @@ ${domain} {
 		X-Frame-Options SAMEORIGIN
 	}
 	root * ${vhostdir}
-	encode gzip
+	encode gzip zstd
 	php_fastcgi ${php_sock}
 	file_server {
 		index index.html
 	}
 	log {
 		output file /var/log/caddy/access_${domain}.log {
-			roll_size 100mb
+			roll_size 32mb
 			roll_keep 3
 			roll_keep_for 7d
 		}
@@ -431,13 +431,13 @@ lcmp_status() {
 }
 
 lcmp_version() {
-    _info "Caddy version:"
+    _info "$(_green "Caddy") version:"
     /usr/bin/caddy version
     echo
-    _info "MariaDB version:"
+    _info "$(_green "MariaDB") version:"
     /usr/bin/mariadb --version
     echo
-    _info "PHP version:"
+    _info "$(_green "PHP") version:"
     /usr/bin/php -v
 }
 
