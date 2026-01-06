@@ -497,7 +497,7 @@ _info "Downloading and running MariaDB repository setup script"
 _error_detect "curl -sLo mariadb_repo_setup.sh https://dl.lamp.sh/files/mariadb_repo_setup.sh"
 
 ###
-sed 's/\/repo\/mariadb-server/\/browse\/mariadb_server/g' > mariadb_repo_setup.sh
+sed 's/\/repo\/mariadb-server/\/browse\/mariadb_server/g' mariadb_repo_setup.sh
 
 _error_detect "chmod +x mariadb_repo_setup.sh"
 # Fix MariaDB package signing key import error
