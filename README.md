@@ -31,6 +31,10 @@
 - [License](#license)
 
 ---
+## 寫在最前
+
+在秋水逸冰大佬脚本的基礎上，增加了 x 探針 和 Valkey (Redis 開源分支) 的部署，自用於 debian 13，僅適用於純净環境首次部署。
+Debian 13 在部署完成后， /run/php 目錄下可能缺少 php-fpm.sock 可通過 `ln -s /run/php/php${php_ver}-fpm.sock /run/php/php-fpm.sock` 解決（${php_ver} 改爲你所部署的 php 版本）
 
 ## Description
 
@@ -85,11 +89,16 @@
 
 ## Installation
 
+```bash
+screen -S lcmp
+```
+
 ### Enterprise Linux 8 / 9 / 10
 
 ```bash
 dnf -y install wget git
-git clone https://github.com/teddysun/lcmp.git
+git clone https://github.com/moewhale/lcmp-teddysun.git
+mv lcmp-teddysun lcmp
 cd lcmp
 chmod +x *.sh
 ./lcmp.sh
@@ -99,13 +108,12 @@ chmod +x *.sh
 
 ```bash
 apt-get -y install wget git
-git clone https://github.com/teddysun/lcmp.git
+git clone https://github.com/moewhale/lcmp-teddysun.git
+mv lcmp-teddysun lcmp
 cd lcmp
 chmod +x *.sh
 ./lcmp.sh
 ```
-
----
 
 ## Upgrade
 
