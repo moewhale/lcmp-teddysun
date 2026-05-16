@@ -488,11 +488,16 @@ configure_php_deb() {
     _error_detect "apt-get update"
 
     # Install PHP packages
-    install_packages "php-common" "php${php_ver}-common" "php${php_ver}-cli" "php${php_ver}-fpm" "php${php_ver}-opcache" "php${php_ver}-readline"
+    install_packages "php-common" "php${php_ver}-common" "php${php_ver}-cli" "php${php_ver}-fpm" "php${php_ver}-readline"
+
+    if [[ "${php_ver}" != "8.5" ]]; then
+		install_packages "php${php_ver}-opcache"
+    fi
+
     install_packages "libphp${php_ver}-embed" "php${php_ver}-bcmath" "php${php_ver}-gd" "php${php_ver}-imap" "php${php_ver}-mysql" "php${php_ver}-dba" "php${php_ver}-mongodb" "php${php_ver}-sybase"
     install_packages "php${php_ver}-pgsql" "php${php_ver}-odbc" "php${php_ver}-enchant" "php${php_ver}-gmp" "php${php_ver}-intl" "php${php_ver}-ldap" "php${php_ver}-snmp" "php${php_ver}-soap"
     install_packages "php${php_ver}-mbstring" "php${php_ver}-curl" "php${php_ver}-pspell" "php${php_ver}-xml" "php${php_ver}-zip" "php${php_ver}-bz2" "php${php_ver}-lz4" "php${php_ver}-zstd"
-    install_packages "php${php_ver}-tidy" "php${php_ver}-sqlite3" "php${php_ver}-imagick" "php${php_ver}-grpc" "php${php_ver}-yaml" "php${php_ver}-uuid"
+    install_packages "php${php_ver}-tidy" "php${php_ver}-sqlite3" "php${php_ver}-imagick" "php${php_ver}-grpc" "php${php_ver}-yaml" "php${php_ver}-uuid" "php${php_ver}-redis" "php${php_ver}-msgpack" "php${php_ver}-yac"
 
     # Create PHP directories
     _error_detect "mkdir -m770 /var/lib/php/{session,wsdlcache,opcache}"
@@ -593,6 +598,9 @@ configure_caddy() {
     _error_detect "mkdir -p /etc/caddy/conf.d/"
     _error_detect "chown -R caddy:caddy /var/log/caddy/"
 
+    # Install X-Prober
+    _error_detect "wget -O /data/www/default/p.php https://raw.githubusercontent.com/kmvan/x-prober/master/dist/prober.php"
+
     # Main Caddyfile
     cat > "/etc/caddy/Caddyfile" << EOF
 {
@@ -658,6 +666,10 @@ install_phpmyadmin() {
         /usr/bin/mariadb -uroot -p"${db_pass}" 2>/dev/null < /data/www/default/pma/sql/create_tables.sql || \
             _warn "Failed to import phpMyAdmin tables"
     fi
+
+    PMA_Random_String=$(head -c 100 /dev/urandom | tr -dc 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789_' | fold -w 22 | head -n 1)
+    mv /data/www/default/pma /data/www/default/${PMA_Random_String}/
+    _info "PMA Directory: /data/www/default/${PMA_Random_String}/"
 
     _info "phpMyAdmin installation completed"
 }
